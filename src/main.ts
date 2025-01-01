@@ -80,7 +80,10 @@ document.getElementById('shapeSwitch')?.addEventListener('change', (event) => {
 document.getElementById('exportButton')?.addEventListener('click', () => {
   const svgContent = svg.node()?.outerHTML;
   if (svgContent) {
-    const blob = new Blob([svgContent], { type: 'image/svg+xml' });
+    // Ensure the svg content is properly formatted with style information
+    const svgWithStyles = `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="${width}" height="${height}" style="border: 1px solid black;">${svgContent}</svg>`;
+
+    const blob = new Blob([svgWithStyles], { type: 'image/svg+xml' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
