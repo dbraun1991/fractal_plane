@@ -1,7 +1,7 @@
 import * as d3 from 'd3';
 
-const width = 400;
-const height = 300;
+const width = 800;
+const height = 600;
 
 // Create SVG container
 const svg = d3
@@ -11,45 +11,24 @@ const svg = d3
   .attr('height', height)
   .style('border', '1px solid black');
 
-// Define initial grid size
+// Define initial 'geometric shape' grid size
 let size = 50;
 
-// Create five monochromatic gradients from light gray to dark gray
-const colorPalette = [
-  '#D3D3D3', // Light Gray
-  '#A4C8E1', // Light Blue
-  '#7FB3D5', // Soft Blue
-  '#5DADE2', // Sky Blue
-  '#48C9B0', // Light Teal
-  '#1ABC9C', // Strong Teal
-  '#16A085', // Dark Teal
-  '#2ECC71', // Light Green
-  '#27AE60', // Green
-  '#1F8E3B', // Mature Green
-  '#17B6A2', // Aqua Green
-  '#16A085', // Dark Teal
-  '#1F3A3D', // Dark Cyan
-  '#2C3E50', // Dark Blue
-  '#34495E', // Steel Blue
-  '#2980B9', // Bright Blue
-  '#2E86C1', // Soft Blue
-  '#3498DB', // Vivid Blue
-  '#5DADE2', // Bright Sky Blue
-  '#1F8E3B', // Mature Green
-  '#000000'  // Black
-];
-
 // Function to get a random color from the new color palette
-const getRandomColor = () => '#2C3E50';
-//colorPalette[Math.floor(Math.random() * colorPalette.length/2)+8];
+const getRandomColor = () => '#EEEEEE';
 
+
+
+// =========================
+// =======  SQUARES  =======
+// =========================
 
 // Function to draw squares
 const drawSquares = () => {
   svg.selectAll('*').remove(); // Clear existing content
 
-  for (let x = 50; x < width; x += size) {
-    for (let y = 50; y < height; y += size) {
+  for (let x = 0; x < width; x += size) {
+    for (let y = 0; y < height; y += size) {
       svg.append('rect')
         .attr('x', x)
         .attr('y', y)
@@ -61,24 +40,34 @@ const drawSquares = () => {
   }
 };
 
+
+
+// ===========================
+// =======  TRIANGLES  =======
+// ===========================
+
 // Initialize Bézier curve degree with float value
 let bezierDegree = 0.0;
 
-// Initialize distance (default is 50)
-let controlPointDistance = 50;
+// Initialize Control Point Distance as a percentage of size (default: 50%)
+let controlPointDistancePercent = 50; 
 
-// Initialize segment curvatures (default is 50)
-let firstSegmentCurvature = 50;  // First segment: Top-left to Top-right
-let secondSegmentCurvature = 50; // Second segment: Top-right to Bottom
-
+// Function to calculate actual distance from percentage
+const calculateControlDistance = () => (controlPointDistancePercent / 100) * size;
 
 
 
+// Function to draw cubic bezier triangles symmetrically
 const drawCubicBezierTrianglesSymmetric = () => {
   svg.selectAll('*').remove(); // Clear existing content
+  // fill whole svg with color dark blue as background color 
+  svg.append('rect')
+  .attr('width', width) // Full width of the SVG
+  .attr('height', height) // Full height of the SVG
+  .attr('fill', '#2C3E50'); // Dark blue color
 
   const halfSize = size / 2;
-  const controlDistance = controlPointDistance; // From slider
+  const controlDistance = calculateControlDistance(); // Dynamically calculate distance
   const controlDegreeAdjustment = (bezierDegree * Math.PI) / 180; // Convert slider degree to radians
 
   for (let y = 0; y < height; y += size) {
@@ -136,13 +125,14 @@ const drawCubicBezierTrianglesSymmetric = () => {
 
 
 
-
-
+// ========================
+// =======  EVENTS  =======
+// ========================
 
 // Control Point Distance Slider event listener
 document.getElementById('distanceSlider')?.addEventListener('input', (event) => {
-  controlPointDistance = parseInt((event.target as HTMLInputElement).value, 10); // Get the slider value
-  document.getElementById('distanceValue')!.textContent = controlPointDistance.toString(); // Update displayed value
+  controlPointDistancePercent = parseInt((event.target as HTMLInputElement).value, 10); // Get percentage
+  document.getElementById('distanceValue')!.textContent = `${controlPointDistancePercent}%`; // Update displayed value
 
   // Redraw the triangles with the updated control point distance
   drawCubicBezierTrianglesSymmetric();
@@ -158,11 +148,12 @@ document.getElementById('bezierSlider')?.addEventListener('input', (event) => {
 });
 
 
-// Initial draw: Triangles with 0-degree curve
-drawCubicBezierTrianglesSymmetric();
+// Set default shape to triangle
+const shapeSwitch = document.getElementById('shapeSwitch') as HTMLSelectElement;
+shapeSwitch.value = 'triangle';
 
-// Initial draw: Squares by default
-drawSquares();
+// Initial draw: Triangles with default settings
+drawCubicBezierTrianglesSymmetric();
 
 // Shape switch event listener
 document.getElementById('shapeSwitch')?.addEventListener('change', (event) => {
