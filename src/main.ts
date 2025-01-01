@@ -15,10 +15,33 @@ const svg = d3
 let size = 50;
 
 // Create five monochromatic gradients from light gray to dark gray
-const grayScale = ['#D3D3D3', '#A9A9A9', '#808080', '#696969', '#2F4F4F']; // Light to dark gray
+const colorPalette = [
+  '#D3D3D3', // Light Gray
+  '#A4C8E1', // Light Blue
+  '#7FB3D5', // Soft Blue
+  '#5DADE2', // Sky Blue
+  '#48C9B0', // Light Teal
+  '#1ABC9C', // Strong Teal
+  '#16A085', // Dark Teal
+  '#2ECC71', // Light Green
+  '#27AE60', // Green
+  '#1F8E3B', // Mature Green
+  '#17B6A2', // Aqua Green
+  '#16A085', // Dark Teal
+  '#1F3A3D', // Dark Cyan
+  '#2C3E50', // Dark Blue
+  '#34495E', // Steel Blue
+  '#2980B9', // Bright Blue
+  '#2E86C1', // Soft Blue
+  '#3498DB', // Vivid Blue
+  '#5DADE2', // Bright Sky Blue
+  '#1F8E3B', // Mature Green
+  '#000000'  // Black
+];
 
-// Function to get a gradient color for the shapes
-const getGradientColor = (index: number) => grayScale[index % grayScale.length];
+// Function to get a random color from the new color palette
+const getRandomColor = () => colorPalette[Math.floor(Math.random() * colorPalette.length)];
+
 
 // Function to draw squares
 const drawSquares = () => {
@@ -26,19 +49,18 @@ const drawSquares = () => {
 
   for (let x = 0; x < width; x += size) {
     for (let y = 0; y < height; y += size) {
-      const gradientIndex = Math.floor(Math.random() * grayScale.length);
       svg.append('rect')
         .attr('x', x)
         .attr('y', y)
         .attr('width', size)
         .attr('height', size)
-        .attr('fill', getGradientColor(gradientIndex))  // Apply gradient color
+        .attr('fill', getRandomColor())  // Apply gradient color
         .attr('stroke', 'black');
     }
   }
 };
 
-// Function to draw triangles with staggered lines
+// Function to draw triangles
 const drawTriangles = () => {
   svg.selectAll('*').remove(); // Clear existing content
 
@@ -59,7 +81,7 @@ const drawTriangles = () => {
 
       svg.append('polygon')
         .attr('points', points)
-        .attr('fill', getGradientColor(Math.floor(Math.random() * grayScale.length)))  // Apply gradient color
+        .attr('fill', getRandomColor())  // Apply random color from the new palette
         .attr('stroke', 'black');
 
       // Mirrored counterpart triangle (rotated 180 degrees, shifted by half the size to the right)
@@ -71,15 +93,11 @@ const drawTriangles = () => {
 
       svg.append('polygon')
         .attr('points', mirroredPoints)
-        .attr('fill', getGradientColor(Math.floor(Math.random() * grayScale.length)))  // Apply random color
+        .attr('fill', getRandomColor())  // Apply random color from the new palette
         .attr('stroke', 'black');
     }
   }
 };
-
-
-
-
 
 // Initial draw: Squares by default
 drawSquares();
@@ -127,3 +145,5 @@ sizeSlider.addEventListener('input', (event) => {
     drawTriangles();
   }
 });
+
+
