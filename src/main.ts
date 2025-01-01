@@ -71,12 +71,15 @@ let controlPointDistance = 50;
 let firstSegmentCurvature = 50;  // First segment: Top-left to Top-right
 let secondSegmentCurvature = 50; // Second segment: Top-right to Bottom
 
+
+
+
 const drawCubicBezierTrianglesSymmetric = () => {
   svg.selectAll('*').remove(); // Clear existing content
 
   const halfSize = size / 2;
   const controlDistance = controlPointDistance; // From slider
-  const controlDegree = (bezierDegree * Math.PI) / 180; // Convert degrees to radians
+  const controlDegreeAdjustment = (bezierDegree * Math.PI) / 180; // Convert slider degree to radians
 
   for (let y = 0; y < height; y += size) {
     const shiftX = (Math.floor(y / size) % 2 !== 0) ? halfSize : 0;
@@ -87,52 +90,54 @@ const drawCubicBezierTrianglesSymmetric = () => {
       const p2 = { x: x + size + shiftX, y: y }; // Top-right
       const p3 = { x: x + halfSize + shiftX, y: y + size }; // Bottom
 
+      // Function to calculate control points with adjusted angle
+      const calculateControlPoints = (start: { x: number; y: number }, end: { x: number; y: number }) => {
+        const dx = end.x - start.x;
+        const dy = end.y - start.y;
+        const defaultDegree = Math.atan2(dy, dx); // Angle of the line segment
+        const finalDegree1 = defaultDegree + controlDegreeAdjustment; // Adjusted angle for first control point
+        const finalDegree2 = defaultDegree - controlDegreeAdjustment; // Adjusted angle for second control point (inverted)
+
+        return {
+          control1: {
+            x: start.x + controlDistance * Math.cos(finalDegree1),
+            y: start.y + controlDistance * Math.sin(finalDegree1),
+          },
+          control2: {
+            x: end.x - controlDistance * Math.cos(finalDegree1), // Invert the direction for symmetry
+            y: end.y - controlDistance * Math.sin(finalDegree1),
+          },
+        };
+      };
+
       // Calculate control points for each segment
-      const controlP1toP2_1 = {
-        x: p1.x + controlDistance * Math.cos(controlDegree),
-        y: p1.y + controlDistance * Math.sin(controlDegree),
-      };
-      const controlP1toP2_2 = {
-        x: p2.x - controlDistance * Math.cos(controlDegree),
-        y: p2.y - controlDistance * Math.sin(controlDegree),
-      };
-
-      const controlP2toP3_1 = {
-        x: p2.x + controlDistance * Math.cos(controlDegree),
-        y: p2.y + controlDistance * Math.sin(controlDegree),
-      };
-      const controlP2toP3_2 = {
-        x: p3.x - controlDistance * Math.cos(controlDegree),
-        y: p3.y - controlDistance * Math.sin(controlDegree),
-      };
-
-      const controlP3toP1_1 = {
-        x: p3.x + controlDistance * Math.cos(controlDegree),
-        y: p3.y + controlDistance * Math.sin(controlDegree),
-      };
-      const controlP3toP1_2 = {
-        x: p1.x - controlDistance * Math.cos(controlDegree),
-        y: p1.y - controlDistance * Math.sin(controlDegree),
-      };
+      const controlsP1toP2 = calculateControlPoints(p1, p2);
+      const controlsP2toP3 = calculateControlPoints(p2, p3);
+      const controlsP3toP1 = calculateControlPoints(p3, p1);
 
       // Draw the cubic Bézier curves
       svg.append('path')
-        .attr('d', `M${p1.x},${p1.y} C${controlP1toP2_1.x},${controlP1toP2_1.y} ${controlP1toP2_2.x},${controlP1toP2_2.y} ${p2.x},${p2.y}`)
+        .attr('d', `M${p1.x},${p1.y} C${controlsP1toP2.control1.x},${controlsP1toP2.control1.y} ${controlsP1toP2.control2.x},${controlsP1toP2.control2.y} ${p2.x},${p2.y}`)
         .attr('stroke', getRandomColor())
         .attr('fill', 'none');
 
       svg.append('path')
-        .attr('d', `M${p2.x},${p2.y} C${controlP2toP3_1.x},${controlP2toP3_1.y} ${controlP2toP3_2.x},${controlP2toP3_2.y} ${p3.x},${p3.y}`)
+        .attr('d', `M${p2.x},${p2.y} C${controlsP2toP3.control1.x},${controlsP2toP3.control1.y} ${controlsP2toP3.control2.x},${controlsP2toP3.control2.y} ${p3.x},${p3.y}`)
         .attr('stroke', getRandomColor())
         .attr('fill', 'none');
 
       svg.append('path')
-        .attr('d', `M${p3.x},${p3.y} C${controlP3toP1_1.x},${controlP3toP1_1.y} ${controlP3toP1_2.x},${controlP3toP1_2.y} ${p1.x},${p1.y}`)
+        .attr('d', `M${p3.x},${p3.y} C${controlsP3toP1.control1.x},${controlsP3toP1.control1.y} ${controlsP3toP1.control2.x},${controlsP3toP1.control2.y} ${p1.x},${p1.y}`)
         .attr('stroke', getRandomColor())
         .attr('fill', 'none');
     }
   }
 };
+
+
+
+
+
 
 // Control Point Distance Slider event listener
 document.getElementById('distanceSlider')?.addEventListener('input', (event) => {
