@@ -40,7 +40,7 @@ const colorPalette = [
 ];
 
 // Function to get a random color from the new color palette
-const getRandomColor = () => colorPalette[Math.floor(Math.random() * colorPalette.length)];
+const getRandomColor = () => colorPalette[Math.floor(Math.random() * colorPalette.length/2)+8];
 
 
 // Function to draw squares
@@ -63,42 +63,49 @@ const drawSquares = () => {
 // Initialize Bézier curve degree
 let bezierDegree = 0;
 
-// Function to draw triangles with Bézier curves
+
+// Function to draw triangles with Bézier curves on each side
 const drawBezierTriangles = () => {
   svg.selectAll('*').remove(); // Clear existing content
 
   const halfSize = size / 2;
   const curveFactor = bezierDegree / 50; // Normalizing the degree to range -1 to 1 for controlling curve intensity
 
-  // Draw the triangles with Bézier curves
+  // Draw the triangles with Bézier curves on each side
   for (let y = 0; y < height; y += size) {
     const shiftX = (Math.floor(y / size) % 2 !== 0) ? halfSize : 0;
 
     for (let x = 0; x < width; x += size) {
-      // Triangle 1 (left part)
-      const points1 = [
-        `${x + shiftX},${y}`, // Start point
-        `${x + size / 2 + shiftX},${y - curveFactor * size}`, // Control point (curved outwards)
-        `${x + size / 2 + shiftX},${y + size + curveFactor * size}`, // Control point (curved outwards)
-        `${x + size + shiftX},${y + size}` // End point
-      ].join(' ');
+      // Define the 3 vertices of the triangle
+      const p1 = { x: x + shiftX, y: y }; // Top-left vertex
+      const p2 = { x: x + size + shiftX, y: y }; // Top-right vertex
+      const p3 = { x: x + halfSize + shiftX, y: y + size }; // Bottom vertex
 
+      // Calculate control points for Bézier curves (opposite directions based on bezierDegree)
+      const control1 = { x: p1.x + curveFactor * size, y: p1.y - curveFactor * size }; // Control point for p1 to p2
+      const control2 = { x: p2.x - curveFactor * size, y: p2.y - curveFactor * size }; // Control point for p2 to p1
+
+      const control3 = { x: p2.x + curveFactor * size, y: p2.y + curveFactor * size }; // Control point for p2 to p3
+      const control4 = { x: p3.x - curveFactor * size, y: p3.y + curveFactor * size }; // Control point for p3 to p2
+
+      const control5 = { x: p3.x + curveFactor * size, y: p3.y - curveFactor * size }; // Control point for p3 to p1
+      const control6 = { x: p1.x - curveFactor * size, y: p1.y + curveFactor * size }; // Control point for p1 to p3
+
+      // Draw the three Bézier curves that form the triangle
       svg.append('path')
-        .attr('d', `M${x + shiftX},${y} C${x + size / 2 + shiftX},${y - curveFactor * size} ${x + size / 2 + shiftX},${y + size + curveFactor * size} ${x + size + shiftX},${y + size}`)
+        .attr('d', `M${p1.x},${p1.y} C${control1.x},${control1.y} ${control2.x},${control2.y} ${p2.x},${p2.y}`)
         .attr('fill', 'none')
         .attr('stroke', getRandomColor())
         .attr('stroke-width', 2);
 
-      // Triangle 2 (right part)
-      const points2 = [
-        `${x + halfSize + shiftX},${y + size}`, // Start point
-        `${x + size + halfSize + shiftX},${y + size - curveFactor * size}`, // Control point
-        `${x + size + halfSize + shiftX},${y - curveFactor * size}`, // Control point
-        `${x + size + shiftX},${y}` // End point
-      ].join(' ');
+      svg.append('path')
+        .attr('d', `M${p2.x},${p2.y} C${control3.x},${control3.y} ${control4.x},${control4.y} ${p3.x},${p3.y}`)
+        .attr('fill', 'none')
+        .attr('stroke', getRandomColor())
+        .attr('stroke-width', 2);
 
       svg.append('path')
-        .attr('d', `M${x + halfSize + shiftX},${y + size} C${x + size + halfSize + shiftX},${y + size - curveFactor * size} ${x + size + halfSize + shiftX},${y - curveFactor * size} ${x + size + shiftX},${y}`)
+        .attr('d', `M${p3.x},${p3.y} C${control5.x},${control5.y} ${control6.x},${control6.y} ${p1.x},${p1.y}`)
         .attr('fill', 'none')
         .attr('stroke', getRandomColor())
         .attr('stroke-width', 2);
