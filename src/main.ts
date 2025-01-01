@@ -44,11 +44,13 @@ const drawTriangles = () => {
 
   const halfSize = size / 2;
 
+  // Draw the primary triangles and their counterparts
   for (let y = 0; y < height; y += size) {
     // Determine the shift for every second row (odd rows only)
     const shiftX = (Math.floor(y / size) % 2 !== 0) ? halfSize : 0;
 
     for (let x = 0; x < width; x += size) {
+      // Main triangle
       const points = [
         `${x + shiftX},${y}`,
         `${x + size + shiftX},${y}`,
@@ -59,9 +61,25 @@ const drawTriangles = () => {
         .attr('points', points)
         .attr('fill', getGradientColor(Math.floor(Math.random() * grayScale.length)))  // Apply gradient color
         .attr('stroke', 'black');
+
+      // Mirrored counterpart triangle (rotated 180 degrees, shifted by half the size to the right)
+      const mirroredPoints = [
+        `${x + halfSize + shiftX},${y + size}`,          // Left corner of the mirrored triangle (shifted right)
+        `${x + size + halfSize + shiftX},${y + size}`,   // Right corner of the mirrored triangle (shifted right)
+        `${x + size + shiftX},${y}`                       // Top corner of the mirrored triangle (at the original top)
+      ].join(' ');
+
+      svg.append('polygon')
+        .attr('points', mirroredPoints)
+        .attr('fill', getGradientColor(Math.floor(Math.random() * grayScale.length)))  // Apply random color
+        .attr('stroke', 'black');
     }
   }
 };
+
+
+
+
 
 // Initial draw: Squares by default
 drawSquares();
