@@ -1,30 +1,34 @@
-
 # Fractal Plane
 
-Fractal Plane is a repository for generating fractal-based, infinitely scalable plane geometries, allowing users to explore mesmerizing self-similar patterns at multiple scales.
-
-A browser-based tool for creating procedural patterns with basic geometric shapes like triangles and squares. This tool allows users to interactively adjust straight lines into Bézier curves and preview changes live. The generated patterns can be exported as SVG files for further use.
+**Fractal Plane** is a browser-based tool for generating fractal-based, infinitely scalable plane geometries. Users can create self-similar patterns using basic geometric shapes like squares and triangles, with the ability to adjust these shapes interactively into Bézier curves for enhanced creative flexibility. The generated patterns can be exported as SVG files for use in other projects or designs.
 
 ## Status
 
-- unstable
-
+- **Unstable** – Ongoing development and features in progress.
 
 ## Features
-- **Procedural Generation**: Create patterns using user-defined geometric rules.
-- **Interactive Canvas**: Adjust shapes and convert straight lines to Bézier curves with live updates.
-- **Live Preview**: See changes in real-time as you modify the shapes.
-- **Export to SVG**: Save your generated patterns as SVG files for use in other projects.
+
+- **Procedural Generation**: Generate patterns using user-defined geometric rules such as squares and triangles.
+- **Interactive Canvas**: Users can switch between square and triangle patterns, and even adjust straight lines into Bézier curves with live previews.
+- **Live Preview**: Preview changes in real-time as you modify the shapes, adjust line curvature, and switch between different geometric patterns.
+- **Export to SVG**: The generated patterns can be exported as SVG files, allowing users to easily incorporate them into other design projects or applications.
+
+## Screenshots
+
+*Insert relevant screenshots here showing the interface and patterns generated using the tool.*
 
 ## Getting Started
 
+Follow these steps to get the project up and running locally.
+
 ### Prerequisites
-- Node.js (v23.5.0 or higher)
-- npm or yarn
+
+- **Node.js** version 23.5.0 or higher
+- **npm** or **yarn** (package manager)
 
 ### Installation
+
 1. Clone the repository:
    ```bash
    git clone https://github.com/dbraun1991/fractal_plane.git
-   cd procedural-pattern-tool
-
+   cd fractal_plane

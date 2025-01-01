@@ -8,11 +8,20 @@
 </head>
 <body>
   <div id="app"></div>
+  
+  <!-- Slider for size adjustment -->
+  <div>
+    <label for="sizeSlider">Grid Size (25px - 300px): </label>
+    <input type="range" id="sizeSlider" min="25" max="300" value="50" />
+    <span id="sizeValue">50</span> px
+  </div>
 
-  <!-- Control Panel -->
-  <div id="controls">
-    <button id="exportButton">Export SVG</button>
-    <label for="shapeSwitch">Switch Shape:</label>
+  <!-- Export button -->
+  <button id="exportButton">Export SVG</button>
+
+  <!-- Shape selection (for square/triangle toggle) -->
+  <div>
+    <label for="shapeSwitch">Select Shape: </label>
     <select id="shapeSwitch">
       <option value="square">Square</option>
       <option value="triangle">Triangle</option>

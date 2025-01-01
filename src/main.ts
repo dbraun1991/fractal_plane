@@ -11,8 +11,8 @@ const svg = d3
   .attr('height', height)
   .style('border', '1px solid black');
 
-// Define grid size
-const size = 50;
+// Define initial grid size
+let size = 50;
 
 // Create five monochromatic gradients from light gray to dark gray
 const grayScale = ['#D3D3D3', '#A9A9A9', '#808080', '#696969', '#2F4F4F']; // Light to dark gray
@@ -38,7 +38,7 @@ const drawSquares = () => {
   }
 };
 
-// Function to draw triangles with staggered lines (shift only every second row)
+// Function to draw triangles with staggered lines
 const drawTriangles = () => {
   svg.selectAll('*').remove(); // Clear existing content
 
@@ -87,5 +87,22 @@ document.getElementById('exportButton')?.addEventListener('click', () => {
     a.download = 'pattern.svg';
     a.click();
     URL.revokeObjectURL(url);
+  }
+});
+
+// Slider event listener to update grid size
+const sizeSlider = document.getElementById('sizeSlider') as HTMLInputElement;
+const sizeValue = document.getElementById('sizeValue') as HTMLSpanElement;
+
+sizeSlider.addEventListener('input', (event) => {
+  size = parseInt((event.target as HTMLInputElement).value, 10); // Get the slider value
+  sizeValue.textContent = size.toString(); // Update displayed size
+
+  // Redraw the pattern with the new size
+  const shape = (document.getElementById('shapeSwitch') as HTMLSelectElement).value;
+  if (shape === 'square') {
+    drawSquares();
+  } else if (shape === 'triangle') {
+    drawTriangles();
   }
 });
