@@ -14,15 +14,11 @@ const svg = d3
 // Define grid size
 const size = 50;
 
-// Function to generate random colors
-const getRandomColor = () => {
-  const letters = '0123456789ABCDEF';
-  let color = '#';
-  for (let i = 0; i < 6; i++) {
-    color += letters[Math.floor(Math.random() * 16)];
-  }
-  return color;
-};
+// Create five monochromatic gradients from light gray to dark gray
+const grayScale = ['#D3D3D3', '#A9A9A9', '#808080', '#696969', '#2F4F4F']; // Light to dark gray
+
+// Function to get a gradient color for the shapes
+const getGradientColor = (index: number) => grayScale[index % grayScale.length];
 
 // Function to draw squares
 const drawSquares = () => {
@@ -30,33 +26,38 @@ const drawSquares = () => {
 
   for (let x = 0; x < width; x += size) {
     for (let y = 0; y < height; y += size) {
+      const gradientIndex = Math.floor(Math.random() * grayScale.length);
       svg.append('rect')
         .attr('x', x)
         .attr('y', y)
         .attr('width', size)
         .attr('height', size)
-        .attr('fill', getRandomColor())  // Random color
+        .attr('fill', getGradientColor(gradientIndex))  // Apply gradient color
         .attr('stroke', 'black');
     }
   }
 };
 
-// Function to draw triangles
+// Function to draw triangles with staggered lines (shift only every second row)
 const drawTriangles = () => {
   svg.selectAll('*').remove(); // Clear existing content
 
   const halfSize = size / 2;
-  for (let x = 0; x < width; x += size) {
-    for (let y = 0; y < height; y += size) {
+
+  for (let y = 0; y < height; y += size) {
+    // Determine the shift for every second row (odd rows only)
+    const shiftX = (Math.floor(y / size) % 2 !== 0) ? halfSize : 0;
+
+    for (let x = 0; x < width; x += size) {
       const points = [
-        `${x},${y}`,
-        `${x + size},${y}`,
-        `${x + halfSize},${y + size}`
+        `${x + shiftX},${y}`,
+        `${x + size + shiftX},${y}`,
+        `${x + halfSize + shiftX},${y + size}`
       ].join(' ');
 
       svg.append('polygon')
         .attr('points', points)
-        .attr('fill', getRandomColor())  // Random color
+        .attr('fill', getGradientColor(Math.floor(Math.random() * grayScale.length)))  // Apply gradient color
         .attr('stroke', 'black');
     }
   }
