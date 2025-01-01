@@ -7,7 +7,6 @@
   <link rel="stylesheet" href="/src/styles/style.css">
 </head>
 <body>
-  <div id="app"></div>
   
   <!-- Slider for size adjustment -->
   <div>
@@ -25,6 +24,14 @@
     </select>
   </div>
 
+  <!-- Stroke width adjustment -->
+  <div>
+    <label for="strokeSlider">Stroke Width (1px - 10px): </label>
+    <input type="range" id="strokeSlider" min="1" max="10" value="1" />
+    <span id="strokeValue">3</span> px
+  </div>
+
+
   <!-- Bézier Curve Degree Slider -->
   <div>
     <label for="bezierSlider">Bézier Curve Degree (-50 to 50): </label>
@@ -41,6 +48,9 @@
 
   <!-- Export button -->
   <button id="exportButton">Export SVG</button>
+
+
+  <div id="app"></div>
 
   <script type="module" src="/src/main.ts"></script>
 </body>

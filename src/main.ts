@@ -1,7 +1,7 @@
 import * as d3 from 'd3';
 
-const width = 800;
-const height = 600;
+const width = 800*1.4;
+const height = 600*1.4;
 
 // Create SVG container
 const svg = d3
@@ -17,7 +17,8 @@ let size = 50;
 // Function to get a random color from the new color palette
 const getRandomColor = () => '#EEEEEE';
 
-
+// Initialize stroke width
+let strokeWidth = 1;
 
 // =========================
 // =======  SQUARES  =======
@@ -35,10 +36,12 @@ const drawSquares = () => {
         .attr('width', size)
         .attr('height', size)
         .attr('fill', getRandomColor())  // Apply gradient color
-        .attr('stroke', 'black');
+        .attr('stroke', 'black')
+        .attr('stroke-width', strokeWidth); // Apply dynamic stroke width
     }
   }
 };
+
 
 
 
@@ -108,16 +111,18 @@ const drawCubicBezierTrianglesSymmetric = () => {
       svg.append('path')
         .attr('d', `M${p1.x},${p1.y} C${controlsP1toP2.control1.x},${controlsP1toP2.control1.y} ${controlsP1toP2.control2.x},${controlsP1toP2.control2.y} ${p2.x},${p2.y}`)
         .attr('stroke', getRandomColor())
+        .attr('stroke-width', strokeWidth)  // Apply dynamic stroke width
         .attr('fill', 'none');
-
       svg.append('path')
         .attr('d', `M${p2.x},${p2.y} C${controlsP2toP3.control1.x},${controlsP2toP3.control1.y} ${controlsP2toP3.control2.x},${controlsP2toP3.control2.y} ${p3.x},${p3.y}`)
         .attr('stroke', getRandomColor())
+        .attr('stroke-width', strokeWidth)  // Apply dynamic stroke width
         .attr('fill', 'none');
 
       svg.append('path')
         .attr('d', `M${p3.x},${p3.y} C${controlsP3toP1.control1.x},${controlsP3toP1.control1.y} ${controlsP3toP1.control2.x},${controlsP3toP1.control2.y} ${p1.x},${p1.y}`)
         .attr('stroke', getRandomColor())
+        .attr('stroke-width', strokeWidth)  // Apply dynamic stroke width
         .attr('fill', 'none');
     }
   }
@@ -191,6 +196,20 @@ sizeSlider.addEventListener('input', (event) => {
   sizeValue.textContent = size.toString(); // Update displayed size
 
   // Redraw the pattern with the new size
+  const shape = (document.getElementById('shapeSwitch') as HTMLSelectElement).value;
+  if (shape === 'square') {
+    drawSquares();
+  } else if (shape === 'triangle') {
+    drawCubicBezierTrianglesSymmetric();
+  }
+});
+
+// Event listener for stroke width slider
+document.getElementById('strokeSlider')?.addEventListener('input', (event) => {
+  strokeWidth = parseInt((event.target as HTMLInputElement).value, 10); // Get stroke width value
+  document.getElementById('strokeValue')!.textContent = strokeWidth.toString(); // Update displayed value
+
+  // Redraw the current shape with the updated stroke width
   const shape = (document.getElementById('shapeSwitch') as HTMLSelectElement).value;
   if (shape === 'square') {
     drawSquares();
