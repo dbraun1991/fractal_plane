@@ -60,44 +60,63 @@ const drawSquares = () => {
   }
 };
 
-// Function to draw triangles
-const drawTriangles = () => {
+// Initialize Bézier curve degree
+let bezierDegree = 0;
+
+// Function to draw triangles with Bézier curves
+const drawBezierTriangles = () => {
   svg.selectAll('*').remove(); // Clear existing content
 
   const halfSize = size / 2;
+  const curveFactor = bezierDegree / 50; // Normalizing the degree to range -1 to 1 for controlling curve intensity
 
-  // Draw the primary triangles and their counterparts
+  // Draw the triangles with Bézier curves
   for (let y = 0; y < height; y += size) {
-    // Determine the shift for every second row (odd rows only)
     const shiftX = (Math.floor(y / size) % 2 !== 0) ? halfSize : 0;
 
     for (let x = 0; x < width; x += size) {
-      // Main triangle
-      const points = [
-        `${x + shiftX},${y}`,
-        `${x + size + shiftX},${y}`,
-        `${x + halfSize + shiftX},${y + size}`
+      // Triangle 1 (left part)
+      const points1 = [
+        `${x + shiftX},${y}`, // Start point
+        `${x + size / 2 + shiftX},${y - curveFactor * size}`, // Control point (curved outwards)
+        `${x + size / 2 + shiftX},${y + size + curveFactor * size}`, // Control point (curved outwards)
+        `${x + size + shiftX},${y + size}` // End point
       ].join(' ');
 
-      svg.append('polygon')
-        .attr('points', points)
-        .attr('fill', getRandomColor())  // Apply random color from the new palette
-        .attr('stroke', 'black');
+      svg.append('path')
+        .attr('d', `M${x + shiftX},${y} C${x + size / 2 + shiftX},${y - curveFactor * size} ${x + size / 2 + shiftX},${y + size + curveFactor * size} ${x + size + shiftX},${y + size}`)
+        .attr('fill', 'none')
+        .attr('stroke', getRandomColor())
+        .attr('stroke-width', 2);
 
-      // Mirrored counterpart triangle (rotated 180 degrees, shifted by half the size to the right)
-      const mirroredPoints = [
-        `${x + halfSize + shiftX},${y + size}`,          // Left corner of the mirrored triangle (shifted right)
-        `${x + size + halfSize + shiftX},${y + size}`,   // Right corner of the mirrored triangle (shifted right)
-        `${x + size + shiftX},${y}`                       // Top corner of the mirrored triangle (at the original top)
+      // Triangle 2 (right part)
+      const points2 = [
+        `${x + halfSize + shiftX},${y + size}`, // Start point
+        `${x + size + halfSize + shiftX},${y + size - curveFactor * size}`, // Control point
+        `${x + size + halfSize + shiftX},${y - curveFactor * size}`, // Control point
+        `${x + size + shiftX},${y}` // End point
       ].join(' ');
 
-      svg.append('polygon')
-        .attr('points', mirroredPoints)
-        .attr('fill', getRandomColor())  // Apply random color from the new palette
-        .attr('stroke', 'black');
+      svg.append('path')
+        .attr('d', `M${x + halfSize + shiftX},${y + size} C${x + size + halfSize + shiftX},${y + size - curveFactor * size} ${x + size + halfSize + shiftX},${y - curveFactor * size} ${x + size + shiftX},${y}`)
+        .attr('fill', 'none')
+        .attr('stroke', getRandomColor())
+        .attr('stroke-width', 2);
     }
   }
 };
+
+// Initial draw: Triangles with 0-degree curve
+drawBezierTriangles();
+
+// Bézier curve degree slider event listener
+document.getElementById('bezierSlider')?.addEventListener('input', (event) => {
+  bezierDegree = parseInt((event.target as HTMLInputElement).value, 10); // Get the slider value
+  document.getElementById('bezierValue')!.textContent = bezierDegree.toString(); // Update displayed value
+
+  // Redraw the triangles with the updated Bézier curve degree
+  drawBezierTriangles();
+});
 
 // Initial draw: Squares by default
 drawSquares();
@@ -108,7 +127,7 @@ document.getElementById('shapeSwitch')?.addEventListener('change', (event) => {
   if (shape === 'square') {
     drawSquares();
   } else if (shape === 'triangle') {
-    drawTriangles();
+    drawBezierTriangles();
   }
 });
 
@@ -142,7 +161,7 @@ sizeSlider.addEventListener('input', (event) => {
   if (shape === 'square') {
     drawSquares();
   } else if (shape === 'triangle') {
-    drawTriangles();
+    drawBezierTriangles();
   }
 });
 

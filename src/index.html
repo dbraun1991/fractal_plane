@@ -16,9 +16,6 @@
     <span id="sizeValue">50</span> px
   </div>
 
-  <!-- Export button -->
-  <button id="exportButton">Export SVG</button>
-
   <!-- Shape selection (for square/triangle toggle) -->
   <div>
     <label for="shapeSwitch">Select Shape: </label>
@@ -27,6 +24,16 @@
       <option value="triangle">Triangle</option>
     </select>
   </div>
+
+  <!-- Bézier Curve Degree Slider -->
+  <div>
+    <label for="bezierSlider">Bézier Curve Degree (-50 to 50): </label>
+    <input type="range" id="bezierSlider" min="-50" max="50" value="0" />
+    <span id="bezierValue">0</span> degrees
+  </div>
+
+  <!-- Export button -->
+  <button id="exportButton">Export SVG</button>
 
   <script type="module" src="/src/main.ts"></script>
 </body>
