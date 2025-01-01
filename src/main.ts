@@ -1,7 +1,7 @@
 import * as d3 from 'd3';
 
-const width = 800;
-const height = 600;
+const width = 400;
+const height = 300;
 
 // Create SVG container
 const svg = d3
@@ -40,15 +40,16 @@ const colorPalette = [
 ];
 
 // Function to get a random color from the new color palette
-const getRandomColor = () => colorPalette[Math.floor(Math.random() * colorPalette.length/2)+8];
+const getRandomColor = () => '#2C3E50';
+//colorPalette[Math.floor(Math.random() * colorPalette.length/2)+8];
 
 
 // Function to draw squares
 const drawSquares = () => {
   svg.selectAll('*').remove(); // Clear existing content
 
-  for (let x = 0; x < width; x += size) {
-    for (let y = 0; y < height; y += size) {
+  for (let x = 50; x < width; x += size) {
+    for (let y = 50; y < height; y += size) {
       svg.append('rect')
         .attr('x', x)
         .attr('y', y)
@@ -60,36 +61,46 @@ const drawSquares = () => {
   }
 };
 
-// Initialize Bézier curve degree
-let bezierDegree = 0;
+// Initialize Bézier curve degree with float value
+let bezierDegree = 0.0;
 
+// Initialize distance (default is 50)
+let controlPointDistance = 50;
+
+// Initialize segment curvatures (default is 50)
+let firstSegmentCurvature = 50;  // First segment: Top-left to Top-right
+let secondSegmentCurvature = 50; // Second segment: Top-right to Bottom
 
 // Function to draw triangles with Bézier curves on each side
 const drawBezierTriangles = () => {
   svg.selectAll('*').remove(); // Clear existing content
 
   const halfSize = size / 2;
-  const curveFactor = bezierDegree / 50; // Normalizing the degree to range -1 to 1 for controlling curve intensity
+  const curveFactor = bezierDegree / 15; // Normalizing the degree to range -1 to 1 for controlling curve intensity
+
+  // Adjust control point displacement for each segment
+  const firstSegmentDisplacement = firstSegmentCurvature / 100;
+  const secondSegmentDisplacement = secondSegmentCurvature / 100;
 
   // Draw the triangles with Bézier curves on each side
-  for (let y = 0; y < height; y += size) {
+  for (let y = 50; y < height; y += size) {
     const shiftX = (Math.floor(y / size) % 2 !== 0) ? halfSize : 0;
 
-    for (let x = 0; x < width; x += size) {
+    for (let x = 50; x < width; x += size) {
       // Define the 3 vertices of the triangle
       const p1 = { x: x + shiftX, y: y }; // Top-left vertex
       const p2 = { x: x + size + shiftX, y: y }; // Top-right vertex
       const p3 = { x: x + halfSize + shiftX, y: y + size }; // Bottom vertex
 
-      // Calculate control points for Bézier curves (opposite directions based on bezierDegree)
-      const control1 = { x: p1.x + curveFactor * size, y: p1.y - curveFactor * size }; // Control point for p1 to p2
-      const control2 = { x: p2.x - curveFactor * size, y: p2.y - curveFactor * size }; // Control point for p2 to p1
+      // Calculate control points for Bézier curves with different displacement for each segment
+      const control1 = { x: p1.x + curveFactor * size * firstSegmentDisplacement, y: p1.y - curveFactor * size * firstSegmentDisplacement };
+      const control2 = { x: p2.x - curveFactor * size * firstSegmentDisplacement, y: p2.y - curveFactor * size * firstSegmentDisplacement };
 
-      const control3 = { x: p2.x + curveFactor * size, y: p2.y + curveFactor * size }; // Control point for p2 to p3
-      const control4 = { x: p3.x - curveFactor * size, y: p3.y + curveFactor * size }; // Control point for p3 to p2
+      const control3 = { x: p2.x + curveFactor * size * secondSegmentDisplacement, y: p2.y + curveFactor * size * secondSegmentDisplacement };
+      const control4 = { x: p3.x - curveFactor * size * secondSegmentDisplacement, y: p3.y + curveFactor * size * secondSegmentDisplacement };
 
-      const control5 = { x: p3.x + curveFactor * size, y: p3.y - curveFactor * size }; // Control point for p3 to p1
-      const control6 = { x: p1.x - curveFactor * size, y: p1.y + curveFactor * size }; // Control point for p1 to p3
+      const control5 = { x: p3.x + curveFactor * size * firstSegmentDisplacement, y: p3.y - curveFactor * size * firstSegmentDisplacement };
+      const control6 = { x: p1.x - curveFactor * size * secondSegmentDisplacement, y: p1.y + curveFactor * size * secondSegmentDisplacement };
 
       // Draw the three Bézier curves that form the triangle
       svg.append('path')
@@ -113,17 +124,46 @@ const drawBezierTriangles = () => {
   }
 };
 
-// Initial draw: Triangles with 0-degree curve
-drawBezierTriangles();
+// First Segment Curvature Slider event listener
+document.getElementById('firstSegmentSlider')?.addEventListener('input', (event) => {
+  firstSegmentCurvature = parseInt((event.target as HTMLInputElement).value, 10); // Get the slider value
+  document.getElementById('firstSegmentValue')!.textContent = firstSegmentCurvature.toString(); // Update displayed value
+
+  // Redraw the triangles with the updated first segment curvature
+  drawBezierTriangles();
+});
+
+// Second Segment Curvature Slider event listener
+document.getElementById('secondSegmentSlider')?.addEventListener('input', (event) => {
+  secondSegmentCurvature = parseInt((event.target as HTMLInputElement).value, 10); // Get the slider value
+  document.getElementById('secondSegmentValue')!.textContent = secondSegmentCurvature.toString(); // Update displayed value
+
+  // Redraw the triangles with the updated second segment curvature
+  drawBezierTriangles();
+});
+
+// Control Point Distance Slider event listener
+document.getElementById('distanceSlider')?.addEventListener('input', (event) => {
+  controlPointDistance = parseInt((event.target as HTMLInputElement).value, 10); // Get the slider value
+  document.getElementById('distanceValue')!.textContent = controlPointDistance.toString(); // Update displayed value
+
+  // Redraw the triangles with the updated control point distance
+  drawBezierTriangles();
+});
+
 
 // Bézier curve degree slider event listener
 document.getElementById('bezierSlider')?.addEventListener('input', (event) => {
-  bezierDegree = parseInt((event.target as HTMLInputElement).value, 10); // Get the slider value
-  document.getElementById('bezierValue')!.textContent = bezierDegree.toString(); // Update displayed value
+  bezierDegree = parseFloat((event.target as HTMLInputElement).value); // Get the slider value as float
+  document.getElementById('bezierValue')!.textContent = bezierDegree.toFixed(1); // Update displayed value
 
   // Redraw the triangles with the updated Bézier curve degree
   drawBezierTriangles();
 });
+
+
+// Initial draw: Triangles with 0-degree curve
+drawBezierTriangles();
 
 // Initial draw: Squares by default
 drawSquares();

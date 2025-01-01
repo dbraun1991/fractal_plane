@@ -27,10 +27,32 @@
 
   <!-- Bézier Curve Degree Slider -->
   <div>
-    <label for="bezierSlider">Bézier Curve Degree (-50 to 50): </label>
-    <input type="range" id="bezierSlider" min="-50" max="50" value="0" />
+    <label for="bezierSlider">Bézier Curve Degree (-15 to 15): </label>
+    <input type="range" id="bezierSlider" min="-15" max="15" value="0" step="0.1" />
     <span id="bezierValue">0</span> degrees
   </div>
+
+  <!-- Bézier Curve Control Point Distance -->
+  <div>
+    <label for="distanceSlider">Control Point Distance: </label>
+    <input type="range" id="distanceSlider" min="0" max="30" value="15" />
+    <span id="distanceValue">50</span> px
+  </div>
+
+  <!-- Bézier Curve First Segment Control -->
+  <div>
+    <label for="firstSegmentSlider">First Segment Curvature: </label>
+    <input type="range" id="firstSegmentSlider" min="0" max="100" value="50" />
+    <span id="firstSegmentValue">50</span> px
+  </div>
+
+  <!-- Bézier Curve Second Segment Control -->
+  <div>
+    <label for="secondSegmentSlider">Second Segment Curvature: </label>
+    <input type="range" id="secondSegmentSlider" min="0" max="100" value="50" />
+    <span id="secondSegmentValue">50</span> px
+  </div>
+
 
   <!-- Export button -->
   <button id="exportButton">Export SVG</button>
