@@ -2,6 +2,7 @@
 
 **Fractal Plane** is a browser-based tool for generating beautiful geometric patterns using Bézier curves. It creates mesmerizing, symmetrical designs that can be customized through an intuitive interface and exported as SVG files.
 
+
 ## Features
 
 - **Interactive Pattern Controls**:
@@ -15,11 +16,19 @@
 - **Dark Mode**: Triangle patterns display on a dark blue (#2C3E50) background
 - **SVG Export**: Save your designs as scalable vector graphics
 
+
 ## Preview
+
+The tool generates intricate patterns like the one above, where each shape's edges can be curved using Bézier mathematics for smooth, organic-looking results.
+
+#### In action
+
+<img src="docs/fractal_pattern_example.gif" alt="Pattern Preview" style="max-width: 100%; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
+
+#### Ready for export
 
 <img src="docs/fractal_pattern_example.png" alt="Pattern Preview" style="max-width: 100%; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
 
-The tool generates intricate patterns like the one above, where each shape's edges can be curved using Bézier mathematics for smooth, organic-looking results.
 
 ## Implementation Details
 
@@ -27,6 +36,7 @@ Built using:
 - D3.js for SVG manipulation and rendering
 - Pure TypeScript for logic and controls
 - HTML5 range inputs for interactive adjustments
+
 
 ## Getting Started
 
@@ -36,6 +46,7 @@ Built using:
 4. Open the browser and navigate to `http://localhost:5173`
 5. Start creating patterns by adjusting the controls
 
+
 ## Usage
 
 1. Select your base shape (triangle or square)
@@ -44,6 +55,7 @@ Built using:
 4. Fine-tune the control point distance for different curve styles
 5. Adjust stroke width as needed
 6. Export your design as an SVG file
+
 
 ## License
 
