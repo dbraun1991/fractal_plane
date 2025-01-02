@@ -1,5 +1,5 @@
 import * as d3 from 'd3';
-import { drawSquares, drawCubicBezierTrianglesSymmetric } from './rendering';
+import { drawSquares, drawCubicBezierTrianglesSymmetric, drawSingleBezierCurve } from './rendering';
 
 const sizeMultiplier = 1.4;
 const width = 800 * sizeMultiplier;
@@ -142,5 +142,16 @@ const drawShapes = () => {
       getRandomColor,
       strokeWidth
     );
+  } else if (shape === 'singleCurve') {
+    drawSingleBezierCurve(
+      svg,
+      width, // Use the global width
+      height, // Use the global height
+      bezierDegree, // Use the dynamically updated Bézier degree
+      controlPointDistancePercent, // Use the dynamically updated offset percentage
+      getRandomColor, // Function to generate the stroke color
+      strokeWidth // Use the dynamically updated stroke width
+    );
+    
   }
 };
