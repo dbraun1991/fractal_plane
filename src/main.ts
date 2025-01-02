@@ -139,7 +139,7 @@ const drawShapes = () => {
       size,
       bezierDegree,
       controlPointDistancePercent,
-      getRandomColor,
+      () => `hsl(${Math.random() * 360}, 70%, 50%)`, // Random color generator
       strokeWidth
     );
   } else if (shape === 'singleCurve') {
