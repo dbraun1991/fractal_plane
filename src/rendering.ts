@@ -116,10 +116,10 @@ export const drawCubicBezierTrianglesSymmetric = (
   const controlDistance = calculateControlDistance(controlPointDistancePercent, size);
   const controlDegreeAdjustment = (bezierDegree * Math.PI) / 180;
 
-  for (let y = 0; y < height; y += size) {
+  for (let y = size; y < height-(1.5*size); y += size) {
     const shiftX = (Math.floor(y / size) % 2 !== 0) ? halfSize : 0;
 
-    for (let x = 0; x < width; x += size) {
+    for (let x = size; x < width-(2*size); x += size) {
       const p1 = { x: x + shiftX, y: y };
       const p2 = { x: x + size + shiftX, y: y };
       const p3 = { x: x + halfSize + shiftX, y: y + size };
