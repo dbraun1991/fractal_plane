@@ -27,6 +27,29 @@
     input[type="range"] {
       margin-left: 50px; /* Shift sliders to the right */
     }
+
+    /* New styling for the color pickers and text fields */
+    .color-picker-container {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .color-picker-container input[type="color"],
+    .color-picker-container input[type="text"] {
+      width: 120px;
+    }
+
+    .toggle-container {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .toggle-container input[type="checkbox"] {
+      width: 20px;
+      height: 20px;
+    }
   </style>
 </head>
 <body>
@@ -69,13 +92,43 @@
     <span id="distanceValue">50%</span>
   </div>
 
-  <!-- Add horizontal line before the export button -->
+  <!-- New section for color and gradient controls -->
+  <div class="color-picker-container">
+    <!-- Base Stroke Color -->
+    <div>
+      <label for="baseStrokeColor">Base Stroke Color:</label>
+      <input type="color" id="baseStrokeColor" value="#EEEEEE" />
+      <input type="text" id="baseStrokeColorText" value="#EEEEEE" />
+    </div>
+
+    <!-- Base Background Color -->
+    <div>
+      <label for="baseBackgroundColor">Base Background Color:</label>
+      <input type="color" id="baseBackgroundColor" value="#2C3E50" />
+      <input type="text" id="baseBackgroundColorText" value="#2C3E50" />
+    </div>
+  </div>
+
+  <div class="toggle-container">
+    <!-- Gradient Toggle -->
+    <div>
+      <label for="gradientToggle">Enable Gradient:</label>
+      <input type="checkbox" id="gradientToggle" />
+    </div>
+
+    <!-- Gradient Color -->
+    <div>
+      <label for="gradientColor">Gradient Color:</label>
+      <input type="color" id="gradientColor" value="#FFFFFF" />
+      <input type="text" id="gradientColorText" value="#FFFFFF" />
+    </div>
+  </div>
+
   <hr>
 
   <!-- Export button -->
   <button id="exportButton">Export SVG</button>
 
-  <!-- Add horizontal line after the export button -->
   <hr>
 
   <div id="app"></div>

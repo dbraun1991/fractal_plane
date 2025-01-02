@@ -1,30 +1,6 @@
 import * as d3 from 'd3';
 
 
-const getRandomBlueColor = (number: number): string => {
-  const colors = [
-    '#6CA0DC', // Sky Blue
-    '#26619C', // Lapis Blue
-    '#5F9EA0', // Cadet Blue
-    '#1D2951', // Royal Navy Blue
-    '#126180', // Blue Sapphire
-    '#003153', // Prussian Blue
-    '#36454F', // Charcoal Blue
-    '#191970', // Midnight Blue
-    '#1A3A3D'  // Deep Sea Blue
-  ];
-
-  // Calculate the range of indices based on the input number
-  let minIndex = Math.max(0, number - 1);  // Ensure we don't go below 0
-  let maxIndex = Math.min(colors.length - 1, number + 3);  // Ensure we don't go beyond the length of the array
-
-  // Pick a random color from the selected range
-  return colors[Math.floor(Math.random() * (maxIndex - minIndex + 1)) + minIndex];
-  // return dark blue
-};
-
-
-
 
 // ==============================
 // =======  SINGLE CURVE  =======
@@ -126,15 +102,10 @@ export const drawCubicBezierTrianglesSymmetric = (
   size: number,
   bezierDegree: number,
   controlPointDistancePercent: number,
-  getRandomColor: () => string,
+  baseStrokeColor: string,
   strokeWidth: number
 ) => {
-  svg.selectAll('*').remove(); // Clear existing content
 
-  svg.append('rect')
-    .attr('width', width)
-    .attr('height', height)
-    .attr('fill', '#2C3E50'); // Dark blue background
 
   const halfSize = size / 2;
   const controlDistance = calculateControlDistance(controlPointDistancePercent, size);
@@ -161,7 +132,7 @@ export const drawCubicBezierTrianglesSymmetric = (
         `M${p1.x},${p1.y} C${controls.control1.x},${controls.control1.y} ${controls.control2.x},${controls.control2.y} ${p2.x},${p2.y}`
       )
       // .attr('stroke', 'none')
-      .attr('stroke', '#EEEEEE')
+      .attr('stroke', baseStrokeColor)
       .attr('stroke-width', strokeWidth)
       .attr('fill', 'none');
   };
@@ -223,7 +194,6 @@ export const drawCubicBezierTrianglesSymmetric = (
           'd',
           `M${p1.x},${p1.y} C${controlsP1toP2.control1.x},${controlsP1toP2.control1.y} ${controlsP1toP2.control2.x},${controlsP1toP2.control2.y} ${p2.x},${p2.y} C${controlsP2toP3.control1.x},${controlsP2toP3.control1.y} ${controlsP2toP3.control2.x},${controlsP2toP3.control2.y} ${p3.x},${p3.y} C${controlsP3toP1.control1.x},${controlsP3toP1.control1.y} ${controlsP3toP1.control2.x},${controlsP3toP1.control2.y} ${p1.x},${p1.y}`
         )
-        // .attr('fill', getRandomBlueColor(randomGeneratorSeed))
         .attr('fill', 'none')
         .attr('stroke', 'none');
     }
