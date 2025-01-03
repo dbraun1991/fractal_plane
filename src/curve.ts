@@ -12,7 +12,8 @@ export const drawSingleBezierCurve = (
     controlPointOffsetPercent: number,
     getRandomColor: () => string,
     strokeWidth: number,
-    prepareBackground: () => void // Accept the background preparation function
+    prepareBackground: () => void,
+    isSymmetric:boolean
   ) => {
     svg.selectAll('*').remove(); // Clear existing content
 
