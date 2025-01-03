@@ -22,6 +22,10 @@ let size = 50;
 // Initialize stroke width
 let strokeWidth = 1;
 
+// Initialize symmetry toggle
+let isSymmetric = true;
+
+
 // ===========================
 // =======  TRIANGLES  =======
 // ===========================
@@ -38,49 +42,10 @@ let baseBackgroundColor = '#2C3E50'; // Initial background color (default: white
 let gradientEnabled = false; // Gradient toggle state
 let gradientColor = '#EEEEEE'; // Initial gradient color
 
-// ========================
-// =======  EVENTS  =======
-// ========================
 
-// Control Point Distance Slider event listener
-document.getElementById('distanceSlider')?.addEventListener('input', (event) => {
-  controlPointDistancePercent = parseInt((event.target as HTMLInputElement).value, 10); // Get percentage
-  document.getElementById('distanceValue')!.textContent = `${controlPointDistancePercent}%`; // Update displayed value
-
-  // Redraw the triangles with the updated control point distance
-  drawShapes();
-});
-
-// Bézier curve degree slider event listener
-document.getElementById('bezierSlider')?.addEventListener('input', (event) => {
-  bezierDegree = parseFloat((event.target as HTMLInputElement).value); // Get the slider value as float
-  document.getElementById('bezierValue')!.textContent = bezierDegree.toFixed(1); // Update displayed value
-
-  // Redraw the triangles with the updated Bézier curve degree
-  drawShapes();
-});
-
-// Shape switch event listener
-document.getElementById('shapeSwitch')?.addEventListener('change', (event) => {
-  drawShapes();
-});
-
-// Export button event listener
-document.getElementById('exportButton')?.addEventListener('click', () => {
-  const svgContent = svg.node()?.outerHTML;
-  if (svgContent) {
-    // Ensure the svg content is properly formatted with style information
-    const svgWithStyles = `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="${width}" height="${height}" style="border: 1px solid black;">${svgContent}</svg>`;
-
-    const blob = new Blob([svgWithStyles], { type: 'image/svg+xml' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = 'pattern.svg';
-    a.click();
-    URL.revokeObjectURL(url);
-  }
-});
+// ====================================
+// =======  BasicEffect-Events  =======
+// ====================================
 
 // Slider event listener to update grid size
 const sizeSlider = document.getElementById('sizeSlider') as HTMLInputElement;
@@ -94,6 +59,11 @@ sizeSlider.addEventListener('input', (event) => {
   drawShapes();
 });
 
+// Shape switch event listener
+document.getElementById('shapeSwitch')?.addEventListener('change', (event) => {
+  drawShapes();
+});
+
 // Event listener for stroke width slider
 document.getElementById('strokeSlider')?.addEventListener('input', (event) => {
   strokeWidth = parseInt((event.target as HTMLInputElement).value, 10); // Get stroke width value
@@ -102,6 +72,40 @@ document.getElementById('strokeSlider')?.addEventListener('input', (event) => {
   // Redraw the current shape with the updated stroke width
   drawShapes();
 });
+
+
+// ===============================
+// =======  Bezier-Events  =======
+// ===============================
+
+document.getElementById('symmetricToggle')?.addEventListener('change', (event) => {
+  isSymmetric = (event.target as HTMLInputElement).checked; // Get checkbox state
+  // Redraw shapes based on updated symmetry state
+  drawShapes();
+});
+
+// Bézier curve degree slider event listener
+document.getElementById('bezierSlider')?.addEventListener('input', (event) => {
+  bezierDegree = parseFloat((event.target as HTMLInputElement).value); // Get the slider value as float
+  document.getElementById('bezierValue')!.textContent = bezierDegree.toFixed(1); // Update displayed value
+
+  // Redraw the triangles with the updated Bézier curve degree
+  drawShapes();
+});
+
+// Control Point Distance Slider event listener
+document.getElementById('distanceSlider')?.addEventListener('input', (event) => {
+  controlPointDistancePercent = parseInt((event.target as HTMLInputElement).value, 10); // Get percentage
+  document.getElementById('distanceValue')!.textContent = `${controlPointDistancePercent}%`; // Update displayed value
+
+  // Redraw the triangles with the updated control point distance
+  drawShapes();
+});
+
+
+// ==============================
+// =======  Color-Events  =======
+// ==============================
 
 // Event listener for base stroke color picker
 document.getElementById('baseStrokeColor')?.addEventListener('input', (event) => {
@@ -175,6 +179,33 @@ document.getElementById('gradientColorText')?.addEventListener('input', (event) 
   drawShapes();
 });
 
+
+// ==============================
+// =======  Export-Event  =======
+// ==============================
+
+// Export button event listener
+document.getElementById('exportButton')?.addEventListener('click', () => {
+  const svgContent = svg.node()?.outerHTML;
+  if (svgContent) {
+    // Ensure the svg content is properly formatted with style information
+    const svgWithStyles = `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="${width}" height="${height}" style="border: 1px solid black;">${svgContent}</svg>`;
+
+    const blob = new Blob([svgWithStyles], { type: 'image/svg+xml' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'pattern.svg';
+    a.click();
+    URL.revokeObjectURL(url);
+  }
+});
+
+
+// =============================
+// =======  Draw-Events  =======
+// =============================
+
 // Initial draw: Triangles with default settings
 drawCubicBezierTrianglesSymmetric(
   svg,
@@ -183,7 +214,7 @@ drawCubicBezierTrianglesSymmetric(
   size,
   bezierDegree,
   controlPointDistancePercent,
-  baseStrokeColor, // Use the base stroke color
+  '#2C3E50',      // darkblue
   strokeWidth
 );
 
@@ -241,8 +272,10 @@ const drawShapes = () => {
       width,
       height,
       size,
-      () => baseStrokeColor,
-      strokeWidth
+      bezierDegree, // Bézier degree
+      controlPointDistancePercent, // Bézier control point distance percentage
+      baseStrokeColor, // Base stroke color
+      strokeWidth // Stroke width
     );
   } else if (shape === 'triangle') {
     drawCubicBezierTrianglesSymmetric(
@@ -250,10 +283,10 @@ const drawShapes = () => {
       width,
       height,
       size,
-      bezierDegree,
-      controlPointDistancePercent,
-      baseStrokeColor,
-      strokeWidth
+      bezierDegree, // Bézier degree
+      controlPointDistancePercent, // Bézier control point distance percentage
+      baseStrokeColor, // Base stroke color
+      strokeWidth // Stroke width
     );
   } else if (shape === 'singleCurve') {
     drawSingleBezierCurve(
@@ -263,7 +296,8 @@ const drawShapes = () => {
       bezierDegree, // Use the dynamically updated Bézier degree
       controlPointDistancePercent, // Use the dynamically updated offset percentage
       () => baseStrokeColor,
-      strokeWidth // Use the dynamically updated stroke width
+      strokeWidth, // Use the dynamically updated stroke width
+      prepareBackground // Pass background logic
     );
   };
 

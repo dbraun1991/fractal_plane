@@ -21,7 +21,6 @@ export const drawCubicBezierTrianglesSymmetric = (
   strokeWidth: number
 ) => {
 
-
   const halfSize = size / 2;
   const controlDistance = calculateControlDistance(controlPointDistancePercent, size);
   const controlDegreeAdjustment = (bezierDegree * Math.PI) / 180;
@@ -91,17 +90,6 @@ export const drawCubicBezierTrianglesSymmetric = (
       addEdge(p1, p2, controlsP1toP2);
       addEdge(p2, p3, controlsP2toP3);
       addEdge(p3, p1, controlsP3toP1);
-
-      // Add all x & y values from the points and devide by 3 to get the average x value
-      const averageX = (p1.x + p2.x + p3.x) / 3;
-      const averageY = (p1.y + p2.y + p3.y) / 3;
-      // calculate percentage regarding canvas width and height
-      const percentageX = averageX / width;
-      const percentageY = averageY / height;
-      // add percentages and devide by 2
-      const overallPercentage = (percentageX + percentageY) / 2;
-      // map percentage to number between 3 and 7 as full integers
-      const randomGeneratorSeed = Math.round(overallPercentage * 4 + 3);
 
       // Draw the filled triangle using a closed path
       svg.append('path')
