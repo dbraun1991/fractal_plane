@@ -1,5 +1,8 @@
 import * as d3 from 'd3';
-import { drawSquares, drawCubicBezierTrianglesSymmetric, drawSingleBezierCurve } from './rendering';
+
+import { drawSquares } from './square';
+import { drawCubicBezierTrianglesSymmetric } from './triangle';
+import { drawSingleBezierCurve } from './curve';
 
 const sizeMultiplier = 1.01;
 const width = 800 * sizeMultiplier;
