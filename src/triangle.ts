@@ -18,7 +18,8 @@ export const drawCubicBezierTrianglesSymmetric = (
   bezierDegree: number,
   controlPointDistancePercent: number,
   baseStrokeColor: string,
-  strokeWidth: number
+  strokeWidth: number,
+  isSymmetric: boolean
 ) => {
 
   const halfSize = size / 2;

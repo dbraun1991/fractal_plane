@@ -20,7 +20,7 @@ const svg = d3
 let size = 50;
 
 // Initialize stroke width
-let strokeWidth = 1;
+let strokeWidth = 2;
 
 // Initialize symmetry toggle
 let isSymmetric = true;
@@ -272,10 +272,11 @@ const drawShapes = () => {
       width,
       height,
       size,
-      bezierDegree, // Bézier degree
-      controlPointDistancePercent, // Bézier control point distance percentage
-      baseStrokeColor, // Base stroke color
-      strokeWidth // Stroke width
+      bezierDegree,
+      controlPointDistancePercent,
+      baseStrokeColor,
+      strokeWidth,
+      isSymmetric
     );
   } else if (shape === 'triangle') {
     drawCubicBezierTrianglesSymmetric(
@@ -283,22 +284,23 @@ const drawShapes = () => {
       width,
       height,
       size,
-      bezierDegree, // Bézier degree
-      controlPointDistancePercent, // Bézier control point distance percentage
-      baseStrokeColor, // Base stroke color
-      strokeWidth // Stroke width
+      bezierDegree,
+      controlPointDistancePercent,
+      baseStrokeColor,
+      strokeWidth,
+      isSymmetric
     );
   } else if (shape === 'singleCurve') {
     drawSingleBezierCurve(
       svg,
-      width, // Use the global width
-      height, // Use the global height
-      bezierDegree, // Use the dynamically updated Bézier degree
-      controlPointDistancePercent, // Use the dynamically updated offset percentage
+      width,
+      height,
+      bezierDegree,
+      controlPointDistancePercent,
       () => baseStrokeColor,
-      strokeWidth, // Use the dynamically updated stroke width
-      prepareBackground // Pass background logic
+      strokeWidth,
+      prepareBackground,
+      isSymmetric
     );
-  };
-
+  }
 };

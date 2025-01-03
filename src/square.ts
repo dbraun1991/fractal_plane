@@ -6,7 +6,8 @@ export const drawSquares = (
     bezierDegree: number,
     controlPointDistancePercent: number,
     baseStrokeColor: string,
-    strokeWidth: number
+    strokeWidth: number,
+    isSymmetric: boolean
   ) => {
     // A registry to avoid drawing the same edge twice (if shared)
     const edgeRegistry = new Set<string>();
