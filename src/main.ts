@@ -1,6 +1,6 @@
 import * as d3 from 'd3';
 
-import { drawSquares } from './square';
+import { drawSquares, drawCubicBezierSquaresSymmetric } from './square';
 import { drawCubicBezierTrianglesSymmetric } from './triangle';
 import { drawSingleBezierCurve } from './curve';
 
@@ -24,6 +24,9 @@ let strokeWidth = 2;
 
 // Initialize symmetry toggle
 let isSymmetric = true;
+
+// Initialize gradient reduction toggle
+let isGradientReduction = false;
 
 
 // ===========================
@@ -112,7 +115,7 @@ document.getElementById('distanceSlider')?.addEventListener('input', (event) => 
 // Gradient Reduction of Bézier Curve Degree
 document.getElementById('bezierReductionSlider')?.addEventListener('input', (event) => {
   bezierDegreeReduction = parseFloat((event.target as HTMLInputElement).value); // Get the slider value as float
-  document.getElementById('bezierReductionValue')!.textContent = bezierDegree.toFixed(1); // Update displayed value
+  document.getElementById('bezierReductionValue')!.textContent = bezierDegreeReduction.toFixed(1); // Update displayed value
 
   // Redraw the triangles with the updated Bézier curve degree
   drawShapes();
@@ -293,17 +296,29 @@ const drawShapes = () => {
   prepareBackground();
 
   if (shape === 'square') {
-    drawSquares(
-      svg,
-      width,
-      height,
-      size,
-      bezierDegree,
-      controlPointDistancePercent,
-      baseStrokeColor,
-      strokeWidth,
-      isSymmetric
-    );
+    if (isSymmetric) {
+      drawCubicBezierSquaresSymmetric(
+        svg,
+        width,
+        height,
+        size,
+        bezierDegree,
+        controlPointDistancePercent,
+        baseStrokeColor,
+        strokeWidth
+      );
+    } else {
+      drawSquares(
+        svg,
+        width,
+        height,
+        size,
+        bezierDegree,
+        controlPointDistancePercent,
+        baseStrokeColor,
+        strokeWidth
+      );
+    }
   } else if (shape === 'triangle') {
     drawCubicBezierTrianglesSymmetric(
       svg,

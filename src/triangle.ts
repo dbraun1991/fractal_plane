@@ -22,12 +22,12 @@ export const drawCubicBezierTrianglesSymmetric = (
   isSymmetric: boolean
 ) => {
 
+  // Registry to track edges
+  const edgeRegistry = new Set<string>();
+
   const halfSize = size / 2;
   const controlDistance = calculateControlDistance(controlPointDistancePercent, size);
   const controlDegreeAdjustment = (bezierDegree * Math.PI) / 180;
-
-  // Registry to track edges
-  const edgeRegistry = new Set<string>();
 
   // Helper function to add an edge
   const addEdge = (
@@ -68,17 +68,16 @@ export const drawCubicBezierTrianglesSymmetric = (
         const dx = end.x - start.x;
         const dy = end.y - start.y;
         const defaultDegree = Math.atan2(dy, dx);
-        const finalDegree1 = defaultDegree + controlDegreeAdjustment;
-        const finalDegree2 = defaultDegree - controlDegreeAdjustment;
+        const controlDegree = defaultDegree + controlDegreeAdjustment;
 
         return {
           control1: {
-            x: start.x + controlDistance * Math.cos(finalDegree1),
-            y: start.y + controlDistance * Math.sin(finalDegree1),
+            x: start.x + controlDistance * Math.cos(controlDegree),
+            y: start.y + controlDistance * Math.sin(controlDegree),
           },
           control2: {
-            x: end.x - controlDistance * Math.cos(finalDegree1),
-            y: end.y - controlDistance * Math.sin(finalDegree1),
+            x: end.x - controlDistance * Math.cos(controlDegree),
+            y: end.y - controlDistance * Math.sin(controlDegree),
           },
         };
       };
