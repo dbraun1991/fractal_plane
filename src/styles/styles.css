@@ -5,74 +5,105 @@
 
 /* Custom styles */
 input[type="range"] {
-    width: 100%;
-    -webkit-appearance: none;
-    appearance: none;
-    background: #ddd;
-    border-radius: 10px;
-    height: 10px;
-    outline: none;
-  }
-  
-  input[type="range"]::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    appearance: none;
-    background: #3490dc;
-    border-radius: 50%;
-    width: 20px;
-    height: 20px;
-    cursor: pointer;
-  }
-  
-  input[type="range"]::-moz-range-thumb {
-    background: #3490dc;
-    border-radius: 50%;
-    width: 20px;
-    height: 20px;
-    cursor: pointer;
-  }
-  
-  /* Styling for the input fields */
-  input[type="color"],
-  input[type="text"] {
-    width: 100px;
-    height: 30px;
-    border-radius: 5px;
-  }
-  
-  .color-picker-container {
-    display: flex;
-    gap: 1rem;
-    align-items: center;
-  }
-  
-  .toggle-container {
-    display: flex;
-    gap: 1rem;
-    align-items: center;
-  }
-  
-  label {
-    font-weight: 500;
-  }
-  
-  .control-container {
-    margin-bottom: 1.5rem;
-  }
-  
-  hr {
-    border-top: 2px solid #eee;
-    margin: 2rem 0;
-  }
-  
-  /* Canvas styling */
-/* Ensure no margin or padding on the canvas container */
+  width: 100%;
+  -webkit-appearance: none;
+  appearance: none;
+  background: #ddd;
+  border-radius: 10px;
+  height: 10px;
+  outline: none;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  background: #3490dc;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+}
+
+input[type="range"]::-moz-range-thumb {
+  background: #3490dc;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+}
+
+/* Styling for the input fields */
+input[type="color"],
+input[type="text"] {
+  width: 100px;
+  height: 30px;
+  border-radius: 5px;
+}
+
+.color-picker-container {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.toggle-container {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+label {
+  font-weight: 500;
+}
+
+.control-container {
+  margin-bottom: 1.5rem;
+}
+
+hr {
+  border-top: 2px solid #eee;
+  margin: 2rem 0;
+}
+
+/* Canvas styling */
 #app {
-    margin: 0;
-    padding: 30px;
-    justify-content: center;
-    align-items: center;
-    display: flex;
-  }
-  
-  
+  margin: 0;
+  padding: 30px;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  height: 400px; /* You can adjust this height as needed */
+}
+
+/* Center the Canvas vertically */
+#app {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  height: 100%;
+}
+
+/* Export Button styling */
+#exportButton {
+  margin-top: 20px;
+  display: block;
+  width: auto;
+  background-color: #4c51bf; /* Indigo color */
+  color: white;
+  padding: 12px 24px;
+  font-size: 16px;
+  text-align: center;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+#exportButton:hover {
+  background-color: #434190; /* Slightly darker on hover */
+}
+
+/* Title styling */
+h1 {
+  color: #EEEEEE;
+}
