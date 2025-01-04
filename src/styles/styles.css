@@ -90,7 +90,6 @@ hr {
   margin-top: 20px;
   display: block;
   width: auto;
-  background-color: #4c51bf; /* Indigo color */
   color: white;
   padding: 12px 24px;
   font-size: 16px;
@@ -98,10 +97,6 @@ hr {
   border-radius: 8px;
   cursor: pointer;
   transition: background-color 0.3s ease;
-}
-
-#exportButton:hover {
-  background-color: #434190; /* Slightly darker on hover */
 }
 
 /* Title styling */

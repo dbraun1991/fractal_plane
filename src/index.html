@@ -128,17 +128,20 @@
           <input type="text" id="baseBackgroundColorText" value="#2C3E50" class="h-10 px-2 w-32 text-black rounded-md">
         </div>
       </div>
-
-      <hr>
-
-      <!-- Export Button -->
-      <div class="flex justify-center mt-6">
-        <button id="exportButton" class="bg-indigo-500 hover:bg-indigo-600 text-white font-semibold py-2 px-6 rounded-md transition-all">Export SVG</button>
-      </div>
+      
     </div>
 
-    <!-- Right Side: Canvas -->
-    <div id="app" class="mt-6 bg-gray-900 rounded-lg shadow-lg h-[500px] lg:col-span-3"></div>
+    <!-- Right Side: Canvas and Export Button -->
+    <div id="app-container" class="mt-6 lg:col-span-3 space-y-6">
+      <!-- Canvas -->
+      <div id="app" class="bg-gray-900 rounded-lg shadow-lg h-[500px]"></div>
+    
+      <!-- Export Button -->
+      <button id="exportButton" class="bg-green-800 hover:bg-green-900 text-white font-semibold py-2 px-6 rounded-md transition-all mx-auto block">
+        Export SVG
+      </button>
+    </div>
+
 
   </div>
 
