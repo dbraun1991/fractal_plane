@@ -1,4 +1,5 @@
 import * as d3 from 'd3';
+import './styles/styles.css';
 
 import { drawSquares, drawCubicBezierSquaresSymmetric } from './square';
 import { drawCubicBezierTrianglesSymmetric } from './triangle';
