@@ -32,9 +32,11 @@ let isSymmetric = true;
 
 // Initialize Bézier curve degree with float value
 let bezierDegree = 0.0;
+let bezierDegreeReduction = 0.0;
 
 // Initialize Control Point Distance as a percentage of size (default: 50%)
 let controlPointDistancePercent = 50; 
+let controlPointDistanceReduction = 0.0;
 
 // Color settings
 let baseStrokeColor = '#EEEEEE'; // Initial stroke color (default: black)
@@ -97,6 +99,29 @@ document.getElementById('bezierSlider')?.addEventListener('input', (event) => {
 document.getElementById('distanceSlider')?.addEventListener('input', (event) => {
   controlPointDistancePercent = parseInt((event.target as HTMLInputElement).value, 10); // Get percentage
   document.getElementById('distanceValue')!.textContent = `${controlPointDistancePercent}%`; // Update displayed value
+
+  // Redraw the triangles with the updated control point distance
+  drawShapes();
+});
+
+
+// ========================================
+// =======  Bezier-Gradient-Events  =======
+// ========================================
+
+// Gradient Reduction of Bézier Curve Degree
+document.getElementById('bezierReductionSlider')?.addEventListener('input', (event) => {
+  bezierDegreeReduction = parseFloat((event.target as HTMLInputElement).value); // Get the slider value as float
+  document.getElementById('bezierReductionValue')!.textContent = bezierDegree.toFixed(1); // Update displayed value
+
+  // Redraw the triangles with the updated Bézier curve degree
+  drawShapes();
+});
+
+// Gradient Reduction of Control Point Distance
+document.getElementById('distanceReductionSlider')?.addEventListener('input', (event) => {
+  controlPointDistanceReduction = parseFloat((event.target as HTMLInputElement).value); // Get percentage
+  document.getElementById('distanceReductionValue')!.textContent = `${controlPointDistanceReduction}%`; // Update displayed value
 
   // Redraw the triangles with the updated control point distance
   drawShapes();
@@ -214,8 +239,9 @@ drawCubicBezierTrianglesSymmetric(
   size,
   bezierDegree,
   controlPointDistancePercent,
-  '#2C3E50',      // darkblue
-  strokeWidth
+  baseStrokeColor,
+  strokeWidth,
+  isSymmetric
 );
 
 const prepareBackground = () => {
