@@ -1,176 +1,147 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Procedural Pattern Tool</title>
-  <link rel="stylesheet" href="/src/styles/style.css">
-  <style>
-    input[type="range"] {
-      width: 600px; /* Set slider width */
-      vertical-align: middle; /* Align slider lower in comparison to the label */
-    }
-
-    /* Optional: adjust the spacing between the label and slider if needed */
-    label {
-      vertical-align: middle; /* Align label with the middle of the slider */
-    }
-
-    /* Add 3px margin to the bottom of each slider's container */
-    div {
-      margin-bottom: 10px; /* Ensure sliders don't crowd each other */
-      display: flex; /* Make the label and slider align horizontally */
-      align-items: center; /* Align label and slider vertically */
-    }
-
-    /* Add space to the left of the sliders */
-    input[type="range"] {
-      margin-left: 50px; /* Shift sliders to the right */
-    }
-
-    /* New styling for the color pickers and text fields */
-    .color-picker-container {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .color-picker-container input[type="color"],
-    .color-picker-container input[type="text"] {
-      width: 120px;
-    }
-
-    .toggle-container {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .toggle-container input[type="checkbox"] {
-      width: 20px;
-      height: 20px;
-    }
-  </style>
-</head>
-<body>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
   
-  <!-- Slider for size adjustment -->
-  <div>
-    <label for="sizeSlider">Grid Size (25px - 900px): </label>
-    <input type="range" id="sizeSlider" min="25" max="900" value="50" />
-    <span id="sizeValue">50</span> px
-  </div>
+  <!-- Link to external styles.css -->
+  <link rel="stylesheet" href="/src/styles/styles.css">
+</head>
 
-  <!-- Shape selection (default set to triangle) -->
-  <div>
-    <label for="shapeSwitch">Select Shape: </label>
-    <select id="shapeSwitch">
-      <option value="singleCurve">Single Curve</option>
-      <option value="square">Square</option>
-      <option value="triangle" selected>Triangle</option> <!-- Default set to triangle -->
-    </select>
-  </div>
 
-  <!-- Stroke width adjustment -->
-  <div>
-    <label for="strokeSlider">Stroke Width (1px - 10px): </label>
-    <input type="range" id="strokeSlider" min="1" max="10" value="2" />
-    <span id="strokeValue">3</span> px
-  </div>
+<body class="bg-gray-800 text-white font-sans">
+  <div class="container mx-auto p-6">
 
-  <hr>
+    <!-- Title Section -->
+    <h1 class="text-3xl text-center text-indigo-400 mb-6">Procedural Pattern Tool</h1>
 
-  <div class="toggle-container">
+    <!-- Grid Size Slider -->
+    <div class="control-container">
+      <label for="sizeSlider" class="block text-lg">Grid Size (25px - 900px): </label>
+      <div class="flex items-center">
+        <input type="range" id="sizeSlider" min="25" max="900" value="50" class="w-full mx-4">
+        <span id="sizeValue" class="text-lg">50</span> px
+      </div>
+    </div>
+
+    <!-- Shape Selection -->
+    <div class="control-container">
+      <label for="shapeSwitch" class="block text-lg">Select Shape: </label>
+      <select id="shapeSwitch" class="p-2 rounded-md bg-gray-700 border-2 border-gray-600 text-white">
+        <option value="singleCurve">Single Curve</option>
+        <option value="square">Square</option>
+        <option value="triangle" selected>Triangle</option>
+      </select>
+    </div>
+
+    <!-- Stroke Width Slider -->
+    <div class="control-container">
+      <label for="strokeSlider" class="block text-lg">Stroke Width (1px - 10px): </label>
+      <div class="flex items-center">
+        <input type="range" id="strokeSlider" min="1" max="10" value="2" class="w-full mx-4">
+        <span id="strokeValue" class="text-lg">3</span> px
+      </div>
+    </div>
+
+    <hr>
+
     <!-- Symmetry Toggle -->
-    <div>
-      <label for="symmetricToggle">Is Symmetric: </label>
-      <input type="checkbox" id="symmetricToggle" checked />
+    <div class="toggle-container">
+      <label for="symmetricToggle" class="text-lg">Is Symmetric: </label>
+      <input type="checkbox" id="symmetricToggle" checked class="h-6 w-6 text-indigo-500">
     </div>
-  </div>
 
-  <!-- Bézier Curve Degree Slider -->
-  <div>
-    <label for="bezierSlider">Bézier Curve Degree (-50 to 50): </label>
-    <input type="range" id="bezierSlider" min="-50" max="50" value="0" step="0.1" />
-    <span id="bezierValue">0</span> °
-  </div>
+    <!-- Bézier Curve Degree Slider -->
+    <div class="control-container">
+      <label for="bezierSlider" class="block text-lg">Bézier Curve Degree (-50 to 50): </label>
+      <div class="flex items-center">
+        <input type="range" id="bezierSlider" min="-50" max="50" value="0" step="0.1" class="w-full mx-4">
+        <span id="bezierValue" class="text-lg">0</span> °
+      </div>
+    </div>
 
-  <!-- Bézier Curve - Control Point Distance Slider -->
-  <div>
-    <label for="distanceSlider">Control Point Distance (% of size): </label>
-    <input type="range" id="distanceSlider" min="0" max="100" value="50" />
-    <span id="distanceValue">50%</span>
-  </div>
+    <!-- Control Point Distance Slider -->
+    <div class="control-container">
+      <label for="distanceSlider" class="block text-lg">Control Point Distance (% of size): </label>
+      <div class="flex items-center">
+        <input type="range" id="distanceSlider" min="0" max="100" value="50" class="w-full mx-4">
+        <span id="distanceValue" class="text-lg">50%</span>
+      </div>
+    </div>
 
-  <hr>
+    <hr>
 
-  <div class="toggle-container">
     <!-- Gradient Reduction Toggle -->
-    <div>
-      <label for="gradientReductionToggle">Has Gradient Reduction: </label>
-      <input type="checkbox" id="gradientReductionToggle" unchecked />
-    </div>
-  </div>
-
-  <!-- Gradient Reduction of Bézier Curve Degree -->
-  <div>
-    <label for="bezierReductionSlider">Gradient Reduction of Bézier Curve Degree (% of 'Bézier Curve Degree °'): </label>
-    <input type="range" id="bezierReductionSlider" min="0" max="100" value="50" />
-    <span id="bezierReductionValue">50%</span>
-  </div>
-
-  <!-- Gradient Reduction of Control Point Distance -->
-  <div>
-    <label for="distanceReductionSlider">Gradient Reduction of Control Point Distance (% of 'Control Point Distance %'): </label>
-    <input type="range" id="distanceReductionSlider" min="0" max="100" value="50" />
-    <span id="distanceReductionValue">50%</span>
-  </div>
-
-  <hr>
-
-  <!-- New section for color and gradient controls -->
-  <div class="color-picker-container">
-    <!-- Base Stroke Color -->
-    <div>
-      <label for="baseStrokeColor">Base Stroke Color:</label>
-      <input type="color" id="baseStrokeColor" value="#EEEEEE" />
-      <input type="text" id="baseStrokeColorText" value="#EEEEEE" />
+    <div class="toggle-container">
+      <label for="gradientReductionToggle" class="text-lg">Enable Gradient Reduction:</label>
+      <input type="checkbox" id="gradientReductionToggle" class="h-6 w-6 text-indigo-500">
     </div>
 
-    <!-- Base Background Color -->
-    <div>
-      <label for="baseBackgroundColor">Base Background Color:</label>
-      <input type="color" id="baseBackgroundColor" value="#2C3E50" />
-      <input type="text" id="baseBackgroundColorText" value="#2C3E50" />
+    <!-- Gradient Reduction of Bézier Curve Degree -->
+    <div class="control-container">
+      <label for="bezierReductionSlider" class="block text-lg">Gradient Reduction of Bézier Curve Degree (% of 'Bézier Curve Degree °'): </label>
+      <div class="flex items-center">
+        <input type="range" id="bezierReductionSlider" min="0" max="100" value="50" class="w-full mx-4">
+        <span id="bezierReductionValue" class="text-lg">50%</span>
+      </div>
     </div>
-  </div>
 
-  <hr>
+    <!-- Gradient Reduction of Control Point Distance -->
+    <div class="control-container">
+      <label for="distanceReductionSlider" class="block text-lg">Gradient Reduction of Control Point Distance (% of 'Control Point Distance %'): </label>
+      <div class="flex items-center">
+        <input type="range" id="distanceReductionSlider" min="0" max="100" value="50" class="w-full mx-4">
+        <span id="distanceReductionValue" class="text-lg">50%</span>
+      </div>
+    </div>
 
-  <div class="toggle-container">
+    <hr>
+
     <!-- Gradient Toggle -->
-    <div>
-      <label for="gradientToggle">Enable Gradient:</label>
-      <input type="checkbox" id="gradientToggle" />
+    <div class="toggle-container">
+      <label for="gradientToggle" class="text-lg">Enable Gradient:</label>
+      <input type="checkbox" id="gradientToggle" class="h-6 w-6 text-indigo-500">
     </div>
 
-    <!-- Gradient Color -->
-    <div>
-      <label for="gradientColor">Gradient Color:</label>
-      <input type="color" id="gradientColor" value="#FFFFFF" />
-      <input type="text" id="gradientColorText" value="#FFFFFF" />
+    <!-- Gradient Color Picker -->
+    <div class="color-picker-container">
+      <label for="gradientColor" class="block text-lg">Gradient Color:</label>
+      <input type="color" id="gradientColor" value="#FFFFFF" class="h-10 w-24">
+      <input type="text" id="gradientColorText" value="#FFFFFF" class="h-10 px-2 w-32 text-black rounded-md">
     </div>
+
+    <hr>
+
+    <!-- Color Pickers for Stroke and Background -->
+    <div class="color-picker-container">
+      <div>
+        <label for="baseStrokeColor" class="block text-lg">Base Stroke Color:</label>
+        <input type="color" id="baseStrokeColor" value="#EEEEEE" class="h-10 w-24">
+        <input type="text" id="baseStrokeColorText" value="#EEEEEE" class="h-10 px-2 w-32 text-black rounded-md">
+      </div>
+      <div>
+        <label for="baseBackgroundColor" class="block text-lg">Base Background Color:</label>
+        <input type="color" id="baseBackgroundColor" value="#2C3E50" class="h-10 w-24">
+        <input type="text" id="baseBackgroundColorText" value="#2C3E50" class="h-10 px-2 w-32 text-black rounded-md">
+      </div>
+    </div>
+
+    <hr>
+
+    <!-- Export Button -->
+    <div class="flex justify-center mt-6">
+      <button id="exportButton" class="bg-indigo-500 hover:bg-indigo-600 text-white font-semibold py-2 px-6 rounded-md transition-all">Export SVG</button>
+    </div>
+
+    <!-- Canvas for rendering fractal or pattern -->
+    <div id="app" class="mt-6"></div>
+
   </div>
-
-  <hr>
-
-  <!-- Export button -->
-  <button id="exportButton">Export SVG</button>
-
-  <hr>
-
-  <div id="app"></div>
 
   <script type="module" src="/src/main.ts"></script>
 </body>
+
 </html>
