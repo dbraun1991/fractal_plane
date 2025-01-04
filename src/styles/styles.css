@@ -3,7 +3,8 @@
 @tailwind utilities;
 
 
-/* Custom styles */
+/* Custom styles */  
+
 input[type="range"] {
   width: 100%;
   -webkit-appearance: none;
