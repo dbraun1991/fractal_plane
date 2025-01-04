@@ -112,10 +112,16 @@ document.getElementById('distanceSlider')?.addEventListener('input', (event) => 
 // =======  Bezier-Gradient-Events  =======
 // ========================================
 
+document.getElementById('gradientReductionToggle')?.addEventListener('change', (event) => {
+  isGradientReduction = (event.target as HTMLInputElement).checked; // Get checkbox state
+  // Redraw shapes based on updated gradient reduction state
+  drawShapes();
+});
+
 // Gradient Reduction of Bézier Curve Degree
 document.getElementById('bezierReductionSlider')?.addEventListener('input', (event) => {
   bezierDegreeReduction = parseFloat((event.target as HTMLInputElement).value); // Get the slider value as float
-  document.getElementById('bezierReductionValue')!.textContent = bezierDegreeReduction.toFixed(1); // Update displayed value
+  document.getElementById('bezierReductionValue')!.textContent = `${bezierDegreeReduction}%`; // Update displayed value
 
   // Redraw the triangles with the updated Bézier curve degree
   drawShapes();
@@ -234,19 +240,6 @@ document.getElementById('exportButton')?.addEventListener('click', () => {
 // =======  Draw-Events  =======
 // =============================
 
-// Initial draw: Triangles with default settings
-drawCubicBezierTrianglesSymmetric(
-  svg,
-  width,
-  height,
-  size,
-  bezierDegree,
-  controlPointDistancePercent,
-  baseStrokeColor,
-  strokeWidth,
-  isSymmetric
-);
-
 const prepareBackground = () => {
   // Optionally apply gradient if enabled
   if (gradientEnabled) {
@@ -287,11 +280,29 @@ const prepareBackground = () => {
   }
 };
 
+svg.selectAll('*').remove();
+
+prepareBackground();
+
+// Initial draw: Triangles with default settings
+drawCubicBezierTrianglesSymmetric(
+  svg,
+  width,
+  height,
+  size,
+  bezierDegree,
+  controlPointDistancePercent,
+  baseStrokeColor,
+  strokeWidth,
+  isSymmetric,
+  bezierDegreeReduction,
+  controlPointDistanceReduction
+);
 
 const drawShapes = () => {
   const shape = (document.getElementById('shapeSwitch') as HTMLSelectElement).value;
 
-  svg.selectAll('*').remove(); // Clear existing content
+  svg.selectAll('*').remove();
 
   prepareBackground();
 
@@ -305,7 +316,9 @@ const drawShapes = () => {
         bezierDegree,
         controlPointDistancePercent,
         baseStrokeColor,
-        strokeWidth
+        strokeWidth,
+        bezierDegreeReduction,
+        controlPointDistanceReduction
       );
     } else {
       drawSquares(
@@ -329,7 +342,9 @@ const drawShapes = () => {
       controlPointDistancePercent,
       baseStrokeColor,
       strokeWidth,
-      isSymmetric
+      isSymmetric,
+      bezierDegreeReduction,
+      controlPointDistanceReduction
     );
   } else if (shape === 'singleCurve') {
     drawSingleBezierCurve(

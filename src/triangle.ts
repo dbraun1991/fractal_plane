@@ -19,7 +19,9 @@ export const drawCubicBezierTrianglesSymmetric = (
   controlPointDistancePercent: number,
   baseStrokeColor: string,
   strokeWidth: number,
-  isSymmetric: boolean
+  isSymmetric: boolean,
+  bezierDegreeReduction: number,
+  controlPointDistanceReduction: number
 ) => {
 
   // Registry to track edges
@@ -46,45 +48,58 @@ export const drawCubicBezierTrianglesSymmetric = (
         'd',
         `M${p1.x},${p1.y} C${controls.control1.x},${controls.control1.y} ${controls.control2.x},${controls.control2.y} ${p2.x},${p2.y}`
       )
-      // .attr('stroke', 'none')
       .attr('stroke', baseStrokeColor)
       .attr('stroke-width', strokeWidth)
       .attr('fill', 'none');
   };
 
+  // Function to calculate altered control points based on position
+  const calculateAlteredControlPoints = (
+    start: { x: number; y: number },
+    end: { x: number; y: number },
+    maxDegreeReduction: number,
+    maxDistanceReduction: number,
+    canvasWidth: number,
+    canvasHeight: number
+  ) => {
+    // Calculate the factors for degree and distance alterations based on position
+    const degreeFactor = (start.x + start.y) / (canvasWidth + canvasHeight);
+    const distanceFactor = (start.x + start.y) / (canvasWidth + canvasHeight);
+
+    const adjustedDegree = controlDegreeAdjustment * (1 - degreeFactor * (maxDegreeReduction / 100));
+    const adjustedDistance = controlDistance * (1 - distanceFactor * (maxDistanceReduction / 100));
+
+    // Calculate control points with the adjusted degree and distance
+    const dx = end.x - start.x;
+    const dy = end.y - start.y;
+    const defaultDegree = Math.atan2(dy, dx);
+    const controlDegree = defaultDegree + adjustedDegree;
+
+    return {
+      control1: {
+        x: start.x + adjustedDistance * Math.cos(controlDegree),
+        y: start.y + adjustedDistance * Math.sin(controlDegree),
+      },
+      control2: {
+        x: end.x - adjustedDistance * Math.cos(controlDegree),
+        y: end.y - adjustedDistance * Math.sin(controlDegree),
+      },
+    };
+  };
+
   // Loop through the grid and draw triangles
-  for (let y = size*0.5; y < height-(size*1.5); y += size) {
+  for (let y = size * 0.5; y < height - (size * 1.5); y += size) {
     const shiftX = (Math.floor(y / size) % 2 !== 0) ? halfSize : 0;
 
-    for (let x = size*0.5; x < width-(size*1.8); x += size) {
+    for (let x = size * 0.5; x < width - (size * 1.8); x += size) {
       const p1 = { x: x + shiftX, y: y };
       const p2 = { x: x + size + shiftX, y: y };
       const p3 = { x: x + halfSize + shiftX, y: y + size };
 
-      const calculateControlPoints = (
-        start: { x: number; y: number },
-        end: { x: number; y: number }
-      ) => {
-        const dx = end.x - start.x;
-        const dy = end.y - start.y;
-        const defaultDegree = Math.atan2(dy, dx);
-        const controlDegree = defaultDegree + controlDegreeAdjustment;
-
-        return {
-          control1: {
-            x: start.x + controlDistance * Math.cos(controlDegree),
-            y: start.y + controlDistance * Math.sin(controlDegree),
-          },
-          control2: {
-            x: end.x - controlDistance * Math.cos(controlDegree),
-            y: end.y - controlDistance * Math.sin(controlDegree),
-          },
-        };
-      };
-
-      const controlsP1toP2 = calculateControlPoints(p1, p2);
-      const controlsP2toP3 = calculateControlPoints(p2, p3);
-      const controlsP3toP1 = calculateControlPoints(p3, p1);
+      // Altered control points for each edge
+      const controlsP1toP2 = calculateAlteredControlPoints(p1, p2, bezierDegreeReduction, controlPointDistanceReduction, width, height);
+      const controlsP2toP3 = calculateAlteredControlPoints(p2, p3, bezierDegreeReduction, controlPointDistanceReduction, width, height);
+      const controlsP3toP1 = calculateAlteredControlPoints(p3, p1, bezierDegreeReduction, controlPointDistanceReduction, width, height);
 
       // Add edges using the registry
       addEdge(p1, p2, controlsP1toP2);
