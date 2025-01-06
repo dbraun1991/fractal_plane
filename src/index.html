@@ -27,14 +27,25 @@
         </div>
       </div>
 
-      <!-- Shape Selection -->
-      <div class="control-container">
-        <label for="shapeSwitch" class="block text-lg">Select Shape: </label>
-        <select id="shapeSwitch" class="p-2 rounded-md bg-gray-700 border-2 border-gray-600 text-white">
-          <option value="singleCurve">Single Curve</option>
-          <option value="square">Square</option>
-          <option value="triangle" selected>Triangle</option>
-        </select>
+      <div class="control-container flex flex-wrap gap-4 items-center">
+        <!-- Shape Selection -->
+        <div class="w-full md:w-auto">
+          <label for="shapeSwitch" class="block text-lg">Geometric root: </label>
+          <select id="shapeSwitch" class="p-2 rounded-md bg-gray-700 border-2 border-gray-600 text-white">
+            <option value="singleCurve">Single Curve</option>
+            <option value="square">Square</option>
+            <option value="triangle" selected>Triangle</option>
+          </select>
+        </div>
+      
+        <!-- Order/Fill Selection -->
+        <div class="w-full md:w-auto">
+          <label for="orderSwitch" class="block text-lg">Order/Fill Selection: </label>
+          <select id="orderSwitch" class="p-2 rounded-md bg-gray-700 border-2 border-gray-600 text-white">
+            <option value="flooded" selected>Flooded</option>
+            <option value="rhomb">Rhomb</option>
+          </select>
+        </div>
       </div>
 
       <!-- Stroke Width Slider -->

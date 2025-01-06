@@ -5,9 +5,15 @@ import { drawSquares, drawCubicBezierSquaresSymmetric } from './square';
 import { drawCubicBezierTrianglesSymmetric } from './triangle';
 import { drawSingleBezierCurve } from './curve';
 
-const sizeMultiplier = 1.01;
+const sizeMultiplier = 0.9;
 const width = 800 * sizeMultiplier;
 const height = 600 * sizeMultiplier;
+
+const orderOptions: { [key in "singleCurve" | "triangle" | "square"]: string[] } = {
+  singleCurve: ["flooded"],
+  triangle: ["flooded", "rhomb"],
+  square: ["flooded", "cube"],
+};
 
 // Create SVG container
 const svg = d3
@@ -67,7 +73,30 @@ sizeSlider.addEventListener('input', (event) => {
 
 // Shape switch event listener
 document.getElementById('shapeSwitch')?.addEventListener('change', (event) => {
-  drawShapes();
+  const shape = (event.target as HTMLSelectElement).value;
+  const orderSwitch = document.getElementById('orderSwitch') as HTMLSelectElement;
+
+  if (shape in orderOptions) {
+    // Clear existing options in orderSwitch
+    while (orderSwitch.options.length > 0) {
+      orderSwitch.remove(0);
+    }
+
+    // Add new options based on the selected shape
+    const options = orderOptions[shape as keyof typeof orderOptions];
+    options.forEach(option => {
+      const opt = document.createElement('option');
+      opt.value = option;
+      opt.textContent = option.charAt(0).toUpperCase() + option.slice(1); // Capitalize first letter
+      orderSwitch.appendChild(opt);
+    });
+
+    // Set default value to 'flooded'
+    orderSwitch.value = "flooded";
+
+    // Redraw shapes
+    drawShapes();
+  }
 });
 
 // Event listener for stroke width slider

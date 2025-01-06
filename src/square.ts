@@ -65,8 +65,8 @@ export const drawSquares = (
       }
     };
   
-    for (let x = 0; x < width; x += size) {
-      for (let y = 0; y < height; y += size) {
+    for (let y = size * 0.5; y < height - (size * 1.5); y += size) {
+      for (let x = size * 0.5; x < width - (size * 1.8); x += size) {
         const p1 = { x, y };
         const p2 = { x: x + size, y };
         const p3 = { x: x + size, y: y + size };
@@ -189,8 +189,8 @@ export const drawCubicBezierSquaresSymmetric = (
 
   // Loop to draw squares and their edges
   let pathData = '';
-  for (let x = 0; x < width; x += size) {
-    for (let y = 0; y < height; y += size) {
+  for (let y = size * 0.5; y < height - (size * 1.5); y += size) {
+    for (let x = size * 0.5; x < width - (size * 1.8); x += size) {
       const p1 = { x, y };
       const p2 = { x: x + size, y };
       const p3 = { x: x + size, y: y + size };
